@@ -13,8 +13,8 @@
                     type="primary"
                     icon="el-icon-delete"
                     class="handle-del mr10"
-                    @click="delAllSelection"
-                >批量删除</el-button>
+                    @click="handleAdd"
+                >新增</el-button>
                 <el-input v-model="form.aliasName" placeholder="简称" class="handle-input mr10"></el-input>
                 <el-input v-model="form.companyName" placeholder="公司全称" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
@@ -28,7 +28,7 @@
                 @selection-change="handleSelectionChange"
             >
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
-                <el-table-column prop="id" label="ID" width="55" align="center"></el-table-column>
+                <el-table-column prop="id" label="id" width="55" align="center"></el-table-column>
                 <el-table-column prop="aliasName" label="公司名称"></el-table-column>
                 <el-table-column prop="companyName" label="公司名称"></el-table-column>
                 <el-table-column prop="hierarchy" label="公司名称"></el-table-column>
@@ -64,7 +64,7 @@
         </div>
 
         <!-- 编辑弹出框 -->
-        <!-- <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
+        <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
             <el-form ref="form" :model="form" label-width="70px">
                 <el-form-item label="用户名">
                     <el-input v-model="form.name"></el-input>
@@ -77,7 +77,7 @@
                 <el-button @click="editVisible = false">取 消</el-button>
                 <el-button type="primary" @click="saveEdit">确 定</el-button>
             </span>
-        </el-dialog> -->
+        </el-dialog>
     </div>
 </template>
 
@@ -120,7 +120,7 @@ export default {
                     this.$message.error("访问失败");
                 }
             }).catch(error => {
-                this.$message.error(error);
+                this.$message.error("访问失败");
             }) 
         },
         // 删除操作
@@ -139,15 +139,8 @@ export default {
         handleSelectionChange(val) {
             this.multipleSelection = val;
         },
-        delAllSelection() {
-            const length = this.multipleSelection.length;
-            let str = '';
-            this.delList = this.delList.concat(this.multipleSelection);
-            for (let i = 0; i < length; i++) {
-                str += this.multipleSelection[i].name + ' ';
-            }
-            this.$message.error(`删除了${str}`);
-            this.multipleSelection = [];
+        handleAdd() {
+            this.editVisible = true;
         },
         // 编辑操作
         handleEdit(index, row) {

@@ -20,8 +20,7 @@
                 <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
             </div>
             <el-table
-                :data="tableData"
-                border
+                :data="tableData"        border
                 class="table"
                 ref="multipleTable"
                 header-cell-class-name="table-header"
@@ -51,16 +50,17 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <!-- <div class="pagination">
-                <el-pagination
-                    background
-                    layout="total, prev, pager, next"
-                    :current-page="pageIndex"
+            <div class="block" align="right">
+                <el-pagination                    
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :current-page="currentPage"
+                    :page-sizes="[10, 20, 50, 100]"
                     :page-size="pageSize"
-                    :total="pageTotal"
+                    :total="total"
                     @current-change="handlePageChange"
+                    @size-change="handleSizeChange"
                 ></el-pagination>
-            </div> -->
+            </div>
         </div>
 
         <!-- 编辑弹出框 -->
@@ -92,7 +92,8 @@ export default {
             multipleSelection: [],
             delList: [],
             editVisible: false,
-            pageTotal: 0,
+            total: 0,
+
             form: {
                 aliasName: '',
                 companyName: ''
@@ -110,7 +111,7 @@ export default {
             Axios.post("/company/listAll",this.form)
             .then(( { data = {} })=> {
                 if (data.status == 200) {
-                    this.tableData = data.result
+                    this.tableData = data.result.list
                     // this.$set(this.tableData, "data", data.result);
                     // this.$message({
                     //     message: data.msg,

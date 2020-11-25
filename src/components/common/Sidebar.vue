@@ -151,7 +151,7 @@ export default {
                     title: '支持作者'
                 },
                 {
-                    icon: 'el-icon-office-building',
+                    icon: 'el-icon-setting',
                     index: '/sysmage',
                     title: '系统管理',
                     subs: [

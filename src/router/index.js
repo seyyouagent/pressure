@@ -106,6 +106,11 @@ export default new Router({
                     path: '/sysmage',
                     component: () => import(/* webpackChunkName: "donate" */ '../components/views/Sysmage.vue'),
                     meta: { title: '公司管理' }
+                },
+                {
+                    path: '/users',
+                    component: () => import(/* webpackChunkName: "donate" */ '../components/views/Users.vue'),
+                    meta: { title: '用户管理' }
                 }
             ]
         },

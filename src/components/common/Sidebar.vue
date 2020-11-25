@@ -158,6 +158,10 @@ export default {
                         {
                             index: 'sysmage',
                             title: '公司管理'
+                        },
+                        {
+                            index: 'users',
+                            title: '用户管理'
                         }
                     ]
                 }

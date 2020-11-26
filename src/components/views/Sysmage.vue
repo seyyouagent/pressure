@@ -50,7 +50,7 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <div class="block" align="right">
+            <div class="pagination">
                 <el-pagination                    
                     layout="total, sizes, prev, pager, next, jumper"
                     :current-page="currentPage"
@@ -93,7 +93,9 @@ export default {
             delList: [],
             editVisible: false,
             total: 0,
-
+            currentPage:0,
+            pageSize:10,
+            total:0,
             form: {
                 aliasName: '',
                 companyName: ''
@@ -111,7 +113,8 @@ export default {
             Axios.post("/company/listAll",this.form)
             .then(( { data = {} })=> {
                 if (data.status == 200) {
-                    this.tableData = data.result.list
+                    console.log(data.result)
+                    this.tableData = data.result
                     // this.$set(this.tableData, "data", data.result);
                     // this.$message({
                     //     message: data.msg,
@@ -135,6 +138,12 @@ export default {
                     this.tableData.splice(index, 1);
                 })
                 .catch(() => {});
+        },
+        handleSizeChange(){
+
+        },
+        handleSizeChange(){
+
         },
         // 多选操作
         handleSelectionChange(val) {

@@ -58,7 +58,7 @@
                     :page-size="pageSize"
                     :total="total"
                     @current-change="handlePageChange"
-                    @size-change="handleSizeChange"
+                    @size-change="handlePageChange"
                 ></el-pagination>
             </div>
         </div>
@@ -94,7 +94,7 @@ export default {
             editVisible: false,
             total: 0,
             currentPage:0,
-            pageSize:10,
+            pageSize:20,
             total:0,
             form: {
                 aliasName: '',
@@ -114,7 +114,10 @@ export default {
             .then(( { data = {} })=> {
                 if (data.status == 200) {
                     console.log(data.result)
-                    this.tableData = data.result
+                    this.tableData = data.result.list
+                    this.currentPage = data.result.currentPage
+                    this.total = data.result.total
+                    this.pages = data.result.pages
                     // this.$set(this.tableData, "data", data.result);
                     // this.$message({
                     //     message: data.msg,
@@ -138,9 +141,6 @@ export default {
                     this.tableData.splice(index, 1);
                 })
                 .catch(() => {});
-        },
-        handleSizeChange(){
-
         },
         handleSizeChange(){
 

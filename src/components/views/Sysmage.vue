@@ -93,7 +93,7 @@ export default {
             editVisible: false,
             total: 0,
             currentPage:1,
-            pageSize:1,
+            pageSize:10,
             total:0,
             form: {
                 aliasName: '',

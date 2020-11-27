@@ -54,10 +54,9 @@
                 <el-pagination                    
                     layout="total, sizes, prev, pager, next, jumper"
                     :current-page="currentPage"
-                    :page-sizes="[10, 20, 50, 100]"
-                    :page-size="pageSize"
+                    :page-sizes="[1,10, 20, 50, 100]"
                     :total="total"
-                    @current-change="handlePageChange"
+                    @current-change="handlePagesChange"
                     @size-change="handlePageChange"
                 ></el-pagination>
             </div>
@@ -93,8 +92,8 @@ export default {
             delList: [],
             editVisible: false,
             total: 0,
-            currentPage:0,
-            pageSize:20,
+            currentPage:1,
+            pageSize:1,
             total:0,
             form: {
                 aliasName: '',
@@ -110,14 +109,20 @@ export default {
     methods: {
         // 触发搜索按钮
         handleSearch() {
-            Axios.post("/company/listAll",this.form)
+
+            const { pageSize, currentPage} = this;
+            const params = {
+                ...this.form,
+                pageSize,
+                pageNum: currentPage
+            }
+            console.log(params)
+            Axios.post("/company/listAll",params)
             .then(( { data = {} })=> {
                 if (data.status == 200) {
                     console.log(data.result)
                     this.tableData = data.result.list
-                    this.currentPage = data.result.currentPage
                     this.total = data.result.total
-                    this.pages = data.result.pages
                     // this.$set(this.tableData, "data", data.result);
                     // this.$message({
                     //     message: data.msg,
@@ -166,8 +171,15 @@ export default {
         },
         // 分页导航
         handlePageChange(val) {
-            this.$set(this.query, 'pageIndex', val);
-            // this.getData();
+            this.pageSize = val
+            // this.$set(this.query, 'pageIndex', val);
+            this.handleSearch();
+        },
+        // 分页导航
+        handlePagesChange(val) {
+            this.currentPage = val
+            // this.$set(this.query, 'pageIndex', val);
+            this.handleSearch();
         }
     }
 };

@@ -14,14 +14,14 @@
                     icon="el-icon-delete"
                     class="handle-del mr10"
                     @click="handleAdd"
-                >新增</el-button>
+                >新 增</el-button>
                 <el-input v-model="form.aliasName" placeholder="简称" class="handle-input mr10"></el-input>
                 <el-input v-model="form.companyName" placeholder="公司全称" class="handle-input mr10"></el-input>
-                <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
+                <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜 索</el-button>
             </div>
-            <el-table
-                :data="tableData"        border
-                class="table"
+            <el-table                
+                :data="tableData"
+                :row-class-name="tableRowClassName"
                 ref="multipleTable"
                 header-cell-class-name="table-header"
                 @selection-change="handleSelectionChange"
@@ -39,13 +39,14 @@
                         <el-button
                             type="text"
                             icon="el-icon-edit"
-                            @click="handleEdit(scope.$index, scope.row)"
-                        >编辑</el-button>
+                            style="margin-right:10px;"
+                            @click="handleEdit(scope.$index, scope.row)" 
+                        >更新</el-button>                        
                         <el-button
                             type="text"
                             icon="el-icon-delete"
                             class="red"
-                            @click="handleDelete(scope.$index, scope.row)"
+                            @click="handleDelete(scope.$index, scope.row)"  
                         >删除</el-button>
                     </template>
                 </el-table-column>
@@ -63,19 +64,20 @@
         </div>
 
         <!-- 编辑弹出框 -->
-        <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
-            <el-form ref="form" :model="form" label-width="70px">
-                <el-form-item label="用户名">
+        <el-dialog title="修改" :visible.sync="editVisible" width="35%">
+            <el-form ref="form" :model="form" label-width="100px">
+                <el-form-item label="用户名：">
                     <el-input v-model="form.name"></el-input>
                 </el-form-item>
-                <el-form-item label="地址">
+                <el-form-item label="地址：">
                     <el-input v-model="form.address"></el-input>
                 </el-form-item>
             </el-form>
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="editVisible = false">取 消</el-button>
-                <el-button type="primary" @click="saveEdit">确 定</el-button>
-            </span>
+            <div align="center" style="margin-top:30px;box-sizing: border-box;">
+            <span slot="footer" class="dialog-footer" >
+                <el-button @click="editVisible = false" style="margin-right:30px;padding:8px 30px">取  消</el-button>
+                <el-button type="primary" @click="saveEdit" style=";padding:8px 30px">确  定</el-button>
+            </span></div>
         </el-dialog>
     </div>
 </template>
@@ -135,6 +137,12 @@ export default {
                 this.$message.error("访问失败");
             }) 
         },
+        tableRowClassName({row, rowIndex}) {
+            if (rowIndex%2=== 1) {
+                return 'success-row';
+            }
+            return '';
+        },
         // 删除操作
         handleDelete(index, row) {
             // 二次确认删除
@@ -185,10 +193,18 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .handle-box {
     margin-bottom: 20px;
 }
+
+.el-table .warning-row {
+    background: oldlace;
+  }
+
+  .el-table .success-row {
+    background: #F2F6FC;
+  }
 
 .handle-select {
     width: 120px;

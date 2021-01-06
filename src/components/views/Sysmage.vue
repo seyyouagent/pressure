@@ -19,7 +19,6 @@
                 <el-input v-model="form.companyName" placeholder="公司全称" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜 索</el-button>
             </div>
-<<<<<<< HEAD
             <el-table                
                 :data="tableData"
                 :row-class-name="tableRowClassName"

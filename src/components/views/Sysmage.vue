@@ -23,11 +23,6 @@
             <el-table                
                 :data="tableData"
                 :row-class-name="tableRowClassName"
-=======
-            <el-table
-                :data="tableData"
-                class="table"
->>>>>>> d2eec7c997beb40e0ee2d31e35f374b61d541156
                 ref="multipleTable"
                 header-cell-class-name="table-header"
                 @selection-change="handleSelectionChange"

@@ -64,19 +64,19 @@
         </div>
 
         <!-- 编辑弹出框 -->
-        <el-dialog title="修改" :visible.sync="editVisible" width="35%">
-            <el-form ref="form" :model="form" label-width="100px">
+        <el-dialog title="新增" :visible.sync="dialogVisible" width="40%">
+            <el-form ref="form" :model="dialogform" label-width="100px">
                 <el-form-item label="用户名：">
-                    <el-input v-model="form.name"></el-input>
+                    <el-input v-model="dialogform.aliasName"></el-input>
                 </el-form-item>
                 <el-form-item label="地址：">
-                    <el-input v-model="form.address"></el-input>
+                    <el-input v-model="dialogform.companyName"></el-input>
                 </el-form-item>
             </el-form>
             <div align="center" style="margin-top:30px;box-sizing: border-box;">
             <span slot="footer" class="dialog-footer" >
-                <el-button @click="editVisible = false" style="margin-right:30px;padding:8px 30px">取  消</el-button>
-                <el-button type="primary" @click="saveEdit" style=";padding:8px 30px">确  定</el-button>
+                <el-button @click="dialogVisible = false" style="margin-right:30px;padding:8px 30px">取  消</el-button>
+                <el-button type="primary" @click="insertEdit" style=";padding:8px 30px">确  定</el-button>
             </span></div>
         </el-dialog>
     </div>
@@ -92,7 +92,7 @@ export default {
             tableData: [],
             multipleSelection: [],
             delList: [],
-            editVisible: false,
+            dialogVisible: false,
             total: 0,
             currentPage:1,
             pageSize:10,
@@ -100,6 +100,10 @@ export default {
             form: {
                 aliasName: '',
                 companyName: ''
+            },
+            dialogform:{
+                aliasName:'',
+                companyName:''
             },
             idx: -1,
             id: -1
@@ -163,19 +167,28 @@ export default {
             this.multipleSelection = val;
         },
         handleAdd() {
-            this.editVisible = true;
+            this.dialogVisible = true;
         },
         // 编辑操作
         handleEdit(index, row) {
             this.idx = index;
             this.form = row;
-            this.editVisible = true;
+            this.dialogVisible = true;
         },
-        // 保存编辑
-        saveEdit() {
-            this.editVisible = false;
-            this.$message.success(`修改第 ${this.idx + 1} 行成功`);
-            this.$set(this.tableData, this.idx, this.form);
+        // 新增编辑
+        insertEdit() {
+            let params=this.dialogform
+            Axios.post("/company/insert",params)
+            .then(( { data = {} })=> {
+                if (data.status == 200) {
+                    this.$message.success("新增成功！")
+                    this.dialogform = {};  //清空表格数据
+                    this.dialogVisible = false;           //关闭弹框
+                    this.handleSearch();                  //刷新列表
+                }
+            }).catch(error => {
+                this.$message.error("新增失败");
+            })
         },
         // 分页导航
         handlePageChange(val) {

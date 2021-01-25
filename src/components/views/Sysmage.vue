@@ -40,13 +40,13 @@
                             type="text"
                             icon="el-icon-edit"
                             style="margin-right:10px;"
-                            @click="handleEdit(scope.$index, scope.row)" 
+                            @click="handleEdit(scope.row.id, scope.row)" 
                         >更新</el-button>                        
                         <el-button
                             type="text"
                             icon="el-icon-delete"
                             class="red"
-                            @click="handleDelete(scope.$index, scope.row)"  
+                            @click="handleDelete(scope.row.id,scope.row)"  
                         >删除</el-button>
                     </template>
                 </el-table-column>
@@ -64,8 +64,11 @@
         </div>
 
         <!-- 编辑弹出框 -->
-        <el-dialog title="新增" :visible.sync="dialogVisible" width="40%">
+        <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="40%">
             <el-form ref="form" :model="dialogform" label-width="100px">
+                <el-form-item label="id：" v-show="false">
+                    <el-input v-model="dialogform.id"></el-input>
+                </el-form-item>
                 <el-form-item label="用户名：">
                     <el-input v-model="dialogform.aliasName"></el-input>
                 </el-form-item>
@@ -76,7 +79,7 @@
             <div align="center" style="margin-top:30px;box-sizing: border-box;">
             <span slot="footer" class="dialog-footer" >
                 <el-button @click="dialogVisible = false" style="margin-right:30px;padding:8px 30px">取  消</el-button>
-                <el-button type="primary" @click="insertEdit" style=";padding:8px 30px">确  定</el-button>
+                <el-button type="primary" @click="insertEdit()" style=";padding:8px 30px">确  定</el-button>
             </span></div>
         </el-dialog>
     </div>
@@ -93,6 +96,7 @@ export default {
             multipleSelection: [],
             delList: [],
             dialogVisible: false,
+            dialogTitle: '新增',
             total: 0,
             currentPage:1,
             pageSize:10,
@@ -102,6 +106,7 @@ export default {
                 companyName: ''
             },
             dialogform:{
+                id : 0,
                 aliasName:'',
                 companyName:''
             },
@@ -110,7 +115,7 @@ export default {
         };
     },
     created() {
-        // this.getData();
+        this.handleSearch();
     },
     methods: {
         // 触发搜索按钮
@@ -122,7 +127,6 @@ export default {
                 pageSize,
                 pageNum: currentPage
             }
-            console.log(params)
             Axios.post("/company/listAll",params)
             .then(( { data = {} })=> {
                 if (data.status == 200) {
@@ -149,15 +153,23 @@ export default {
         },
         // 删除操作
         handleDelete(index, row) {
+            const params = {
+                id : index
+            }
             // 二次确认删除
             this.$confirm('确定要删除吗？', '提示', {
                 type: 'warning'
             })
                 .then(() => {
-                    this.$message.success('删除成功');
-                    this.tableData.splice(index, 1);
+                    Axios.post("/company/deleteByPrimaryKey",params)
+                        .then(( { data = {} })=> {
+                            this.$message.success(data.msg);
+                            this.tableData.splice(index, 1);
+                            this.handleSearch();
+                        })
                 })
                 .catch(() => {});
+            
         },
         handleSizeChange(){
 
@@ -167,28 +179,48 @@ export default {
             this.multipleSelection = val;
         },
         handleAdd() {
+            this.dialogform.aliasName = '';
+            this.dialogform.companyName = '';
+            this.dialogform.id = 0;
             this.dialogVisible = true;
         },
         // 编辑操作
         handleEdit(index, row) {
-            this.idx = index;
-            this.form = row;
             this.dialogVisible = true;
+            this.dialogTitle = '更新';
+            this.dialogform.id = row.id;
+            this.dialogform.aliasName = row.aliasName;
+            this.dialogform.companyName = row.companyName;
         },
         // 新增编辑
         insertEdit() {
-            let params=this.dialogform
-            Axios.post("/company/insert",params)
-            .then(( { data = {} })=> {
-                if (data.status == 200) {
-                    this.$message.success("新增成功！")
-                    this.dialogform = {};  //清空表格数据
-                    this.dialogVisible = false;           //关闭弹框
-                    this.handleSearch();                  //刷新列表
-                }
-            }).catch(error => {
-                this.$message.error("新增失败");
-            })
+            if(this.dialogform.id > 0) {
+                let params=this.dialogform;
+                Axios.post("/company/updateByPrimaryKeySelective",params)
+                .then(( { data = {} })=> {
+                    if (data.status == 200) {
+                        this.$message.success(data.msg)
+                        // this.dialogform = {};  //清空表格数据
+                        this.dialogVisible = false;           //关闭弹框
+                        this.handleSearch();                  //刷新列表
+                    }
+                }).catch(error => {
+                    this.$message.error("更新失败");
+                })
+            } else {
+                let params=this.dialogform;
+                Axios.post("/company/insert",params)
+                .then(( { data = {} })=> {
+                    if (data.status == 200) {
+                        this.$message.success("新增成功！")
+                        // this.dialogform = {};  //清空表格数据
+                        this.dialogVisible = false;           //关闭弹框
+                        this.handleSearch();                  //刷新列表
+                    }
+                }).catch(error => {
+                    this.$message.error("新增失败");
+                })
+            }
         },
         // 分页导航
         handlePageChange(val) {

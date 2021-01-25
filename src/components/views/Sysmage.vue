@@ -202,7 +202,7 @@ export default {
                         this.$message.success(data.msg)
                         // this.dialogform = {};  //清空表格数据
                         this.dialogVisible = false;           //关闭弹框
-                        this.handleSearch();                  //刷新列表
+                        this.handleSearch();                   //刷新列表
                     }
                 }).catch(error => {
                     this.$message.error("更新失败");

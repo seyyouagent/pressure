@@ -103,6 +103,21 @@ export default new Router({
                 //     meta: { title: '支持作者' }
                 // },
                 {
+                    path: '/engin',
+                    component: () => import(/* webpackChunkName: "donate" */ '../components/views/engin.vue'),
+                    meta: { title: '工程管理' }
+                },
+                {
+                    path: '/modular',
+                    component: () => import(/* webpackChunkName: "donate" */ '../components/views/modular.vue'),
+                    meta: { title: '模块管理' }
+                },
+                {
+                    path: '/environment',
+                    component: () => import(/* webpackChunkName: "donate" */ '../components/views/environment.vue'),
+                    meta: { title: '环境管理' }
+                },
+                {
                     path: '/sysmage',
                     component: () => import(/* webpackChunkName: "donate" */ '../components/views/Sysmage.vue'),
                     meta: { title: '公司管理' }
@@ -111,6 +126,11 @@ export default new Router({
                     path: '/users',
                     component: () => import(/* webpackChunkName: "donate" */ '../components/views/Users.vue'),
                     meta: { title: '用户管理' }
+                },
+                {
+                    path: '/tools',
+                    component: () => import(/* webpackChunkName: "donate" */ '../components/views/tools.vue'),
+                    meta: { title: 'dubbo工具' }
                 }
             ]
         },

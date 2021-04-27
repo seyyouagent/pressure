@@ -149,8 +149,25 @@ export default {
                     icon: 'el-icon-lx-redpacket_fill',
                     index: '/donate',
                     title: '支持作者'
-                },
-                {
+                },{
+                    icon: 'el-icon-office-building',
+                    index: '/basics',
+                    title: '基础管理',
+                    subs: [
+                        {
+                            index: 'engin',
+                            title: '工程管理'
+                        },
+                        {
+                            index: 'modular',
+                            title: '模块管理'
+                        },
+                        {
+                            index: 'environment',
+                            title: '环境管理'
+                        }
+                    ]
+                },{
                     icon: 'el-icon-setting',
                     index: '/sysmage',
                     title: '系统管理',
@@ -162,6 +179,16 @@ export default {
                         {
                             index: 'users',
                             title: '用户管理'
+                        }
+                    ]
+                },{
+                    icon: 'el-icon-s-tools',
+                    index: '/tools',
+                    title: '小工具',
+                    subs: [
+                        {
+                            index: 'tools',
+                            title: 'dubbo工具'
                         }
                     ]
                 }

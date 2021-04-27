@@ -175,3 +175,27 @@ a {
 .v-note-wrapper .v-note-panel {
     min-height: 500px;
 }
+
+
+/*接口管理*/
+.width-new {
+    margin-top: 30px;
+    margin-left: 50px;
+    margin-right: 100px;
+    width: 90%;
+}
+.collapse-title {
+    flex: 1 0 90%;
+    order: 1;
+}
+.el-collapse-item__header {
+    flex: 1 0 auto;
+    order: -1;
+}
+.api-div{
+    margin-left: 100px;
+}
+
+.collapse-show{
+     border-collapse: collapse;
+}

@@ -10,7 +10,7 @@ export default new Router({
             redirect: '/dashboard'
         },
         {
-            path: '/',
+            path: '/', 
             component: () => import(/* webpackChunkName: "home" */ '../components/common/Home.vue'),
             meta: { title: '自述文件' },
             children: [
@@ -124,13 +124,18 @@ export default new Router({
                 },
                 {
                     path: '/users',
-                    component: () => import(/* webpackChunkName: "donate" */ '../components/views/Users.vue'),
+                    component: () => import(/* webpackChunkName: "users" */ '../components/views/Users.vue'),
                     meta: { title: '用户管理' }
                 },
                 {
                     path: '/tools',
                     component: () => import(/* webpackChunkName: "donate" */ '../components/views/tools.vue'),
                     meta: { title: 'dubbo工具' }
+                },
+                {
+                    path: '/apimanager',
+                    component: () => import(/* webpackChunkName: "apimanager" */ '../components/views/ApiManager.vue'),
+                    meta: { title: '接口管理' }
                 }
             ]
         },

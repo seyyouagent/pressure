@@ -179,6 +179,10 @@ export default {
                         {
                             index: 'users',
                             title: '用户管理'
+                        },
+                        {
+                            index: 'apimanager',
+                            title: '接口管理'
                         }
                     ]
                 },{
